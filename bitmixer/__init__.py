@@ -72,11 +72,11 @@ class BitMixerBlock(nn.Module):
 
         # Intra-token mixing.
 
-        u = rearrange(z, 'b e l -> b l e') + x
+        u = binarize(rearrange(z, 'b e l -> b l e') + x)
         z = u @ binarize(self.linear_3.weight.T) + binarize(self.linear_3.bias)
         z = binarize(z)
         z = z @ binarize(self.linear_4.weight.T) + binarize(self.linear_4.bias)
-        z = binarize(z) + u
+        z = binarize(z + u)
 
         return z
 
